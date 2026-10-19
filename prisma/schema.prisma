@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id         String      @id @default(cuid())
+  name       String      @unique
+  /// Short line code shown on the board, e.g. FAM, HLT.
+  code       String
+  color      String
+  sortOrder  Int         @default(0)
+  createdAt  DateTime    @default(now())
+  objectives Objective[]
+}
+
+model Objective {
+  id            String         @id @default(cuid())
+  title         String
+  description   String         @default("")
+  categoryId    String
+  category      Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  targetDate    DateTime?      @db.Date
+  archived      Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  subObjectives SubObjective[]
+  todos         Todo[]
+
+  @@index([categoryId])
+}
+
+model SubObjective {
+  id          String    @id @default(cuid())
+  objectiveId String
+  objective   Objective @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  title       String
+  sortOrder   Int       @default(0)
+  todos       Todo[]
+
+  @@index([objectiveId])
+}
+
+model Todo {
+  id             String       @id @default(cuid())
+  title          String
+  notes          String?
+  objectiveId    String
+  objective      Objective    @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  subObjectiveId String
+  subObjective   SubObjective @relation(fields: [subObjectiveId], references: [id], onDelete: Cascade)
+  /// The day the to-do was first planned. Never changes.
+  originalDate   DateTime     @db.Date
+  /// The day the to-do is currently scheduled for.
+  dueDate        DateTime     @db.Date
+  pushCount      Int          @default(0)
+  done           Boolean      @default(false)
+  completedAt    DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([dueDate])
+  @@index([objectiveId])
+  @@index([subObjectiveId])
+}

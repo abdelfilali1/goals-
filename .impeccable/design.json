@@ -1,0 +1,604 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-19T16:04:07.705Z",
+  "title": "Design System: Compass",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Enamel White",
+        "canonical": "oklch(100.0% 0 0)",
+        "hex": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(48% 0 0)",
+          "oklch(60% 0 0)",
+          "oklch(72% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "ink": {
+        "role": "primary",
+        "displayName": "Timetable Ink",
+        "canonical": "oklch(17.8% 0 0)",
+        "hex": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(48% 0 0)",
+          "oklch(60% 0 0)",
+          "oklch(72% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "ink-hover": {
+        "role": "neutral",
+        "displayName": "Ink Hover",
+        "canonical": "oklch(28.9% 0 0)",
+        "hex": "#2b2b2b",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(48% 0 0)",
+          "oklch(60% 0 0)",
+          "oklch(72% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Departure Grey",
+        "canonical": "oklch(50.1% 0.013 256.7)",
+        "hex": "#5f646b",
+        "tonalRamp": [
+          "oklch(15% 0.010 256.7)",
+          "oklch(26% 0.010 256.7)",
+          "oklch(37% 0.011 256.7)",
+          "oklch(48% 0.013 256.7)",
+          "oklch(60% 0.013 256.7)",
+          "oklch(72% 0.011 256.7)",
+          "oklch(84% 0.010 256.7)",
+          "oklch(95% 0.010 256.7)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(93.0% 0.005 258.3)",
+        "hex": "#e6e8eb",
+        "tonalRamp": [
+          "oklch(15% 0.010 258.3)",
+          "oklch(26% 0.010 258.3)",
+          "oklch(37% 0.010 258.3)",
+          "oklch(48% 0.010 258.3)",
+          "oklch(60% 0.010 258.3)",
+          "oklch(72% 0.010 258.3)",
+          "oklch(84% 0.010 258.3)",
+          "oklch(95% 0.010 258.3)"
+        ]
+      },
+      "field-stroke": {
+        "role": "neutral",
+        "displayName": "Field Stroke",
+        "canonical": "oklch(84.7% 0.008 253.9)",
+        "hex": "#c9cdd2",
+        "tonalRamp": [
+          "oklch(15% 0.010 253.9)",
+          "oklch(26% 0.010 253.9)",
+          "oklch(37% 0.010 253.9)",
+          "oklch(48% 0.010 253.9)",
+          "oklch(60% 0.010 253.9)",
+          "oklch(72% 0.010 253.9)",
+          "oklch(84% 0.010 253.9)",
+          "oklch(95% 0.010 253.9)"
+        ]
+      },
+      "wash": {
+        "role": "neutral",
+        "displayName": "Wash",
+        "canonical": "oklch(96.7% 0.003 264.5)",
+        "hex": "#f3f4f6",
+        "tonalRamp": [
+          "oklch(15% 0.010 264.5)",
+          "oklch(26% 0.010 264.5)",
+          "oklch(37% 0.010 264.5)",
+          "oklch(48% 0.010 264.5)",
+          "oklch(60% 0.010 264.5)",
+          "oklch(72% 0.010 264.5)",
+          "oklch(84% 0.010 264.5)",
+          "oklch(95% 0.010 264.5)"
+        ]
+      },
+      "shell": {
+        "role": "neutral",
+        "displayName": "Shell Black",
+        "canonical": "oklch(17.8% 0 0)",
+        "hex": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(48% 0 0)",
+          "oklch(60% 0 0)",
+          "oklch(72% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "shell-muted": {
+        "role": "neutral",
+        "displayName": "Shell Grey",
+        "canonical": "oklch(78.1% 0.010 258.3)",
+        "hex": "#b4b8be",
+        "tonalRamp": [
+          "oklch(15% 0.010 258.3)",
+          "oklch(26% 0.010 258.3)",
+          "oklch(37% 0.010 258.3)",
+          "oklch(48% 0.010 258.3)",
+          "oklch(60% 0.010 258.3)",
+          "oklch(72% 0.010 258.3)",
+          "oklch(84% 0.010 258.3)",
+          "oklch(95% 0.010 258.3)"
+        ]
+      },
+      "signal": {
+        "role": "secondary",
+        "displayName": "Signal Red",
+        "canonical": "oklch(56.7% 0.207 29.5)",
+        "hex": "#d52b1e",
+        "tonalRamp": [
+          "oklch(15% 0.084 29.5)",
+          "oklch(26% 0.142 29.5)",
+          "oklch(37% 0.182 29.5)",
+          "oklch(48% 0.203 29.5)",
+          "oklch(60% 0.205 29.5)",
+          "oklch(72% 0.185 29.5)",
+          "oklch(84% 0.142 29.5)",
+          "oklch(95% 0.084 29.5)"
+        ]
+      },
+      "go": {
+        "role": "secondary",
+        "displayName": "Platform Green",
+        "canonical": "oklch(51.4% 0.117 153.6)",
+        "hex": "#1e7a46",
+        "tonalRamp": [
+          "oklch(15% 0.048 153.6)",
+          "oklch(26% 0.081 153.6)",
+          "oklch(37% 0.103 153.6)",
+          "oklch(48% 0.115 153.6)",
+          "oklch(60% 0.116 153.6)",
+          "oklch(72% 0.105 153.6)",
+          "oklch(84% 0.081 153.6)",
+          "oklch(95% 0.048 153.6)"
+        ]
+      },
+      "planned": {
+        "role": "tertiary",
+        "displayName": "Timetable Slate Blue",
+        "canonical": "oklch(50.2% 0.150 261.4)",
+        "hex": "#2f5fb8",
+        "tonalRamp": [
+          "oklch(15% 0.061 261.4)",
+          "oklch(26% 0.104 261.4)",
+          "oklch(37% 0.132 261.4)",
+          "oklch(48% 0.148 261.4)",
+          "oklch(60% 0.149 261.4)",
+          "oklch(72% 0.134 261.4)",
+          "oklch(84% 0.104 261.4)",
+          "oklch(95% 0.061 261.4)"
+        ]
+      },
+      "plate-clay": {
+        "role": "tertiary",
+        "displayName": "Clay Plate",
+        "canonical": "oklch(50.9% 0.108 29.5)",
+        "hex": "#9a4b40",
+        "tonalRamp": [
+          "oklch(15% 0.044 29.5)",
+          "oklch(26% 0.074 29.5)",
+          "oklch(37% 0.095 29.5)",
+          "oklch(48% 0.106 29.5)",
+          "oklch(60% 0.107 29.5)",
+          "oklch(72% 0.096 29.5)",
+          "oklch(84% 0.074 29.5)",
+          "oklch(95% 0.044 29.5)"
+        ]
+      },
+      "plate-pine": {
+        "role": "tertiary",
+        "displayName": "Pine Plate",
+        "canonical": "oklch(48.7% 0.084 158.8)",
+        "hex": "#2f6e4e",
+        "tonalRamp": [
+          "oklch(15% 0.034 158.8)",
+          "oklch(26% 0.058 158.8)",
+          "oklch(37% 0.074 158.8)",
+          "oklch(48% 0.082 158.8)",
+          "oklch(60% 0.083 158.8)",
+          "oklch(72% 0.075 158.8)",
+          "oklch(84% 0.058 158.8)",
+          "oklch(95% 0.034 158.8)"
+        ]
+      },
+      "plate-navy": {
+        "role": "tertiary",
+        "displayName": "Navy Plate",
+        "canonical": "oklch(45.1% 0.096 259.5)",
+        "hex": "#34558a",
+        "tonalRamp": [
+          "oklch(15% 0.039 259.5)",
+          "oklch(26% 0.066 259.5)",
+          "oklch(37% 0.084 259.5)",
+          "oklch(48% 0.094 259.5)",
+          "oklch(60% 0.095 259.5)",
+          "oklch(72% 0.085 259.5)",
+          "oklch(84% 0.066 259.5)",
+          "oklch(95% 0.039 259.5)"
+        ]
+      },
+      "plate-ochre": {
+        "role": "tertiary",
+        "displayName": "Ochre Plate",
+        "canonical": "oklch(51.1% 0.088 85.5)",
+        "hex": "#7d6222",
+        "tonalRamp": [
+          "oklch(15% 0.036 85.5)",
+          "oklch(26% 0.060 85.5)",
+          "oklch(37% 0.077 85.5)",
+          "oklch(48% 0.086 85.5)",
+          "oklch(60% 0.087 85.5)",
+          "oklch(72% 0.078 85.5)",
+          "oklch(84% 0.060 85.5)",
+          "oklch(95% 0.036 85.5)"
+        ]
+      },
+      "plate-teal": {
+        "role": "tertiary",
+        "displayName": "Teal Plate",
+        "canonical": "oklch(47.8% 0.044 210.8)",
+        "hex": "#3f646b",
+        "tonalRamp": [
+          "oklch(15% 0.018 210.8)",
+          "oklch(26% 0.030 210.8)",
+          "oklch(37% 0.038 210.8)",
+          "oklch(48% 0.043 210.8)",
+          "oklch(60% 0.043 210.8)",
+          "oklch(72% 0.039 210.8)",
+          "oklch(84% 0.030 210.8)",
+          "oklch(95% 0.018 210.8)"
+        ]
+      },
+      "plate-umber": {
+        "role": "tertiary",
+        "displayName": "Umber Plate",
+        "canonical": "oklch(46.3% 0.039 51.7)",
+        "hex": "#6b5345",
+        "tonalRamp": [
+          "oklch(15% 0.016 51.7)",
+          "oklch(26% 0.027 51.7)",
+          "oklch(37% 0.034 51.7)",
+          "oklch(48% 0.038 51.7)",
+          "oklch(60% 0.039 51.7)",
+          "oklch(72% 0.035 51.7)",
+          "oklch(84% 0.027 51.7)",
+          "oklch(95% 0.016 51.7)"
+        ]
+      },
+      "plate-olive": {
+        "role": "tertiary",
+        "displayName": "Olive Plate",
+        "canonical": "oklch(47.3% 0.078 116.4)",
+        "hex": "#59612a",
+        "tonalRamp": [
+          "oklch(15% 0.032 116.4)",
+          "oklch(26% 0.054 116.4)",
+          "oklch(37% 0.069 116.4)",
+          "oklch(48% 0.077 116.4)",
+          "oklch(60% 0.078 116.4)",
+          "oklch(72% 0.070 116.4)",
+          "oklch(84% 0.054 116.4)",
+          "oklch(95% 0.032 116.4)"
+        ]
+      },
+      "plate-plum": {
+        "role": "tertiary",
+        "displayName": "Plum Plate",
+        "canonical": "oklch(47.6% 0.080 339.4)",
+        "hex": "#7a4a6b",
+        "tonalRamp": [
+          "oklch(15% 0.033 339.4)",
+          "oklch(26% 0.055 339.4)",
+          "oklch(37% 0.070 339.4)",
+          "oklch(48% 0.078 339.4)",
+          "oklch(60% 0.079 339.4)",
+          "oklch(72% 0.071 339.4)",
+          "oklch(84% 0.055 339.4)",
+          "oklch(95% 0.033 339.4)"
+        ]
+      },
+      "plate-slate": {
+        "role": "tertiary",
+        "displayName": "Slate Plate",
+        "canonical": "oklch(44.7% 0.021 256.4)",
+        "hex": "#4d5560",
+        "tonalRamp": [
+          "oklch(15% 0.010 256.4)",
+          "oklch(26% 0.014 256.4)",
+          "oklch(37% 0.018 256.4)",
+          "oklch(48% 0.020 256.4)",
+          "oklch(60% 0.021 256.4)",
+          "oklch(72% 0.019 256.4)",
+          "oklch(84% 0.014 256.4)",
+          "oklch(95% 0.010 256.4)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Board head only: the date, page titles, the unlock-screen name."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Category section heads, empty-state headings, the progress summary sentence."
+      },
+      "title-board": {
+        "displayName": "Title Board",
+        "purpose": "Delay figures and week-day heads."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text and field values."
+      },
+      "body-strong": {
+        "displayName": "Body Strong",
+        "purpose": "To-do titles, nav labels, view tabs."
+      },
+      "action": {
+        "displayName": "Action",
+        "purpose": "Buttons and section or group heads."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Counts, percentages, the push control, the done readout."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels, chips, meta lines, shell tab labels."
+      },
+      "label-board": {
+        "displayName": "Label Board",
+        "purpose": "Column heads, weekday heads, axis ticks, table heads, small counts."
+      },
+      "plate": {
+        "displayName": "Plate",
+        "purpose": "Category codes on plates."
+      }
+    },
+    "shadows": [
+      {
+        "name": "tooltip-lift",
+        "value": "0 4px 12px rgba(17,17,17,0.08)",
+        "purpose": "Chart tooltip only; the one floating surface."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-board",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Ease-out for the delay roll and the tick check."
+      },
+      {
+        "name": "delay-roll",
+        "value": "280ms cubic-bezier(0.16, 1, 0.3, 1); from translateY(-60%) opacity 0",
+        "purpose": "The delay numeral rolls in when its value changes, never on first paint."
+      },
+      {
+        "name": "tick-check",
+        "value": "160ms cubic-bezier(0.16, 1, 0.3, 1); check scale 0 to 1",
+        "purpose": "Check mark appearing in a ticked box."
+      },
+      {
+        "name": "state-color",
+        "value": "120ms ease-out",
+        "purpose": "Background and colour changes on buttons and ticks."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce removes delay-roll and tick-check",
+        "purpose": "No movement for users who ask for none. Charts never animate."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px",
+        "purpose": "Delay and push control sit side by side as two board columns."
+      },
+      {
+        "name": "md",
+        "value": "768px",
+        "purpose": "Shell moves to a top bar; Week view gains a day column; chart in-plot labels appear; 24px gutter."
+      }
+    ],
+    "focus": {
+      "value": "2px solid ink, 2px offset; -1px inset on fields; white outline on the shell bar",
+      "purpose": "Visible keyboard focus everywhere."
+    },
+    "borders": [
+      {
+        "name": "rule-row",
+        "value": "1px solid #e6e8eb",
+        "purpose": "Between rows."
+      },
+      {
+        "name": "rule-column-head",
+        "value": "1px solid #111111",
+        "purpose": "Under column heads."
+      },
+      {
+        "name": "rule-section",
+        "value": "2px solid #111111",
+        "purpose": "Under the board head and section heads."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink-filled main action; one per form or header.",
+      "html": "<button class=\"ds-btn-primary\">Add</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 4px; font-family: var(--font-sans, Archivo, system-ui, sans-serif); font-size: 1rem; font-weight: 700; white-space: nowrap; cursor: pointer; transition: background-color 120ms ease-out, color 120ms ease-out; border: none; background: var(--color-ink, #111111); color: var(--color-paper, #ffffff); } .ds-btn-primary:hover { background: var(--color-ink-hover, #2b2b2b); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-ink, #111111); outline-offset: 2px; } .ds-btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "2px ink outline; bulk board actions such as moving unfinished to-dos.",
+      "html": "<button class=\"ds-btn-secondary\">Move 2 unfinished to tomorrow</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 4px; font-family: var(--font-sans, Archivo, system-ui, sans-serif); font-size: 1rem; font-weight: 700; white-space: nowrap; cursor: pointer; transition: background-color 120ms ease-out, color 120ms ease-out; border: 2px solid var(--color-ink, #111111); background: var(--color-paper, #ffffff); color: var(--color-ink, #111111); } .ds-btn-secondary:hover { background: var(--color-wash, #f3f4f6); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-ink, #111111); outline-offset: 2px; }"
+    },
+    {
+      "name": "Quiet Button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Unfilled action (Cancel, Delete, Today); wash on hover.",
+      "html": "<button class=\"ds-btn-quiet\">Cancel</button>",
+      "css": ".ds-btn-quiet { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 4px; font-family: var(--font-sans, Archivo, system-ui, sans-serif); font-size: 1rem; font-weight: 700; white-space: nowrap; cursor: pointer; transition: background-color 120ms ease-out, color 120ms ease-out; border: none; background: transparent; color: var(--color-ink, #111111); } .ds-btn-quiet:hover { background: var(--color-wash, #f3f4f6); } .ds-btn-quiet:focus-visible { outline: 2px solid var(--color-ink, #111111); outline-offset: 2px; }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "The one quiet text field and select style.",
+      "html": "<input class=\"ds-field\" placeholder=\"Add a to-do for today\" aria-label=\"New to-do\">",
+      "css": ".ds-field { width: 100%; min-height: 44px; border: 1px solid var(--color-field-stroke, #c9cdd2); border-radius: 4px; background: var(--color-paper, #ffffff); padding: 10px 12px; font-family: var(--font-sans, Archivo, system-ui, sans-serif); font-size: 1rem; color: var(--color-ink, #111111); caret-color: var(--color-ink, #111111); } .ds-field::placeholder { color: var(--color-muted, #5f646b); } .ds-field:focus-visible { outline: 2px solid var(--color-ink, #111111); outline-offset: -1px; border-color: var(--color-ink, #111111); }"
+    },
+    {
+      "name": "Tick",
+      "kind": "custom",
+      "refersTo": "tick",
+      "description": "Real checkbox drawn as a 22px ink square; fills green with a check that scales in.",
+      "html": "<input type=\"checkbox\" class=\"ds-tick\" aria-label=\"Not done\"> <input type=\"checkbox\" class=\"ds-tick\" aria-label=\"Done\" checked>",
+      "css": ".ds-tick { appearance: none; width: 22px; height: 22px; margin: 0 8px; border: 2px solid var(--color-ink, #111111); border-radius: 3px; background: var(--color-paper, #ffffff); display: inline-grid; place-content: center; vertical-align: middle; cursor: pointer; transition: background-color 120ms ease-out, border-color 120ms ease-out; } .ds-tick::after { content: \"\"; width: 6px; height: 11px; border: solid var(--color-paper, #ffffff); border-width: 0 2.5px 2.5px 0; transform: translateY(-1px) rotate(45deg) scale(0); transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-tick:checked { background: var(--color-go, #1e7a46); border-color: var(--color-go, #1e7a46); } .ds-tick:checked::after { transform: translateY(-1px) rotate(45deg) scale(1); } .ds-tick:focus-visible { outline: 2px solid var(--color-ink, #111111); outline-offset: 2px; }"
+    },
+    {
+      "name": "Code Plate",
+      "kind": "chip",
+      "refersTo": "code-plate",
+      "description": "Category code as a coloured route badge; white condensed text on the category colour.",
+      "html": "<span class=\"ds-plate\" style=\"background:#9a4b40\">FAM</span> <span class=\"ds-plate\" style=\"background:#2f6e4e\">HLT</span> <span class=\"ds-plate\" style=\"background:#34558a\">WRK</span> <span class=\"ds-plate ds-plate-md\" style=\"background:#7d6222\">PER</span>",
+      "css": ".ds-plate { display: inline-flex; align-items: center; justify-content: center; height: 20px; min-width: 36px; padding: 0 4px; border-radius: 3px; font-family: var(--font-sans, Archivo, system-ui, sans-serif); font-size: 0.8125rem; font-weight: 800; font-stretch: 75%; line-height: 1; color: var(--color-paper, #ffffff); } .ds-plate-md { height: 28px; min-width: 44px; padding: 0 6px; font-size: 1rem; }"
+    },
+    {
+      "name": "Delay Figure",
+      "kind": "custom",
+      "refersTo": "delay-figure",
+      "description": "\"+N d\" in condensed red tabular figures, in the board's fixed right column.",
+      "html": "<span class=\"ds-delay\" aria-label=\"Pushed by 5 days\"><span class=\"ds-delay-n\">+5</span><span class=\"ds-delay-d\">d</span></span>",
+      "css": ".ds-delay { font-family: var(--font-sans, Archivo, system-ui, sans-serif); font-stretch: 75%; font-variant-numeric: tabular-nums; font-weight: 800; color: var(--color-signal, #d52b1e); } .ds-delay-n { display: inline-block; font-size: 1.375rem; line-height: 1.2; animation: ds-roll 280ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-delay-d { margin-left: 2px; font-size: 0.8125rem; font-weight: 700; } @keyframes ds-roll { from { transform: translateY(-60%); opacity: 0; } to { transform: none; opacity: 1; } } @media (prefers-reduced-motion: reduce) { .ds-delay-n { animation: none; } }"
+    },
+    {
+      "name": "To-do Row",
+      "kind": "custom",
+      "refersTo": "delay-figure",
+      "description": "The board row: tick, title over plate and objective path, delay column and push control, ruled below.",
+      "html": "<ul class=\"ds-board\"><li class=\"ds-row\"><span class=\"ds-row-tick\"><input type=\"checkbox\" class=\"ds-row-box\" aria-label=\"Call the insurer about the claim\"></span><span class=\"ds-row-main\"><span class=\"ds-row-title\">Call the insurer about the claim</span><span class=\"ds-row-path\"><span class=\"ds-row-plate\">FAM</span>Sort out home admin › Insurance</span></span><span class=\"ds-row-delay\">+5<small>d</small></span><button class=\"ds-row-push\">Next <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button></li></ul>",
+      "css": ".ds-board { list-style: none; margin: 0; padding: 0; font-family: var(--font-sans, Archivo, system-ui, sans-serif); color: var(--color-ink, #111111); } .ds-row { display: grid; grid-template-columns: 44px 1fr 48px 72px; column-gap: 12px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--color-rule, #e6e8eb); } .ds-row-tick { display: flex; height: 44px; align-items: center; justify-content: center; } .ds-row-box { appearance: none; width: 22px; height: 22px; margin: 0; border: 2px solid var(--color-ink, #111111); border-radius: 3px; background: var(--color-paper, #ffffff); cursor: pointer; } .ds-row-box:checked { background: var(--color-go, #1e7a46); border-color: var(--color-go, #1e7a46); } .ds-row-main { min-width: 0; padding: 8px 0; } .ds-row-title { display: block; font-weight: 600; } .ds-row-path { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 0.8125rem; color: var(--color-muted, #5f646b); white-space: nowrap; overflow: hidden; } .ds-row-plate { display: inline-flex; flex: none; align-items: center; justify-content: center; height: 20px; min-width: 36px; padding: 0 4px; border-radius: 3px; background: #9a4b40; color: var(--color-paper, #ffffff); font-weight: 800; font-stretch: 75%; line-height: 1; } .ds-row-delay { text-align: right; color: var(--color-signal, #d52b1e); font-size: 1.375rem; font-weight: 800; font-stretch: 75%; font-variant-numeric: tabular-nums; } .ds-row-delay small { margin-left: 2px; font-size: 0.8125rem; font-weight: 700; } .ds-row-push { display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 44px; border: none; border-radius: 4px; background: transparent; color: var(--color-ink, #111111); font-family: inherit; font-size: 1rem; font-weight: 800; font-stretch: 75%; cursor: pointer; } .ds-row-push:hover { background: var(--color-wash, #f3f4f6); } .ds-row-push:focus-visible, .ds-row-box:focus-visible { outline: 2px solid var(--color-ink, #111111); outline-offset: 2px; }"
+    },
+    {
+      "name": "Shell Tab Bar",
+      "kind": "nav",
+      "refersTo": "shell-bar",
+      "description": "Black shell: three tabs under the thumb on phone; grey inactive, white active.",
+      "html": "<nav class=\"ds-shell\" aria-label=\"Main\"><a href=\"#\" class=\"ds-shell-tab\" aria-current=\"page\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m3 17 2 2 4-4\"/><path d=\"m3 7 2 2 4-4\"/><path d=\"M13 6h8\"/><path d=\"M13 12h8\"/><path d=\"M13 18h8\"/></svg>To-do</a><a href=\"#\" class=\"ds-shell-tab\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/></svg>Objectives</a><a href=\"#\" class=\"ds-shell-tab\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 16v5\"/><path d=\"M16 14v7\"/><path d=\"M20 10v11\"/><path d=\"M8 18v3\"/><path d=\"M4 20v1\"/></svg>Progress</a></nav>",
+      "css": ".ds-shell { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--color-shell, #111111); font-family: var(--font-sans, Archivo, system-ui, sans-serif); } .ds-shell-tab { display: flex; height: 64px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 0.8125rem; font-weight: 600; color: var(--color-shell-muted, #b4b8be); text-decoration: none; } .ds-shell-tab:hover, .ds-shell-tab[aria-current=\"page\"] { color: var(--color-paper, #ffffff); } .ds-shell-tab:focus-visible { outline: 2px solid var(--color-paper, #ffffff); outline-offset: -4px; }"
+    },
+    {
+      "name": "Progress Bar",
+      "kind": "custom",
+      "refersTo": "progress-track",
+      "description": "Thin wash pill with a green fill, figures right-aligned in fixed widths.",
+      "html": "<div class=\"ds-progress\"><div class=\"ds-progress-track\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-label=\"Health progress\"><div class=\"ds-progress-fill\" style=\"width:60%\"></div></div><span class=\"ds-progress-pct\">60%</span><span class=\"ds-progress-count\">3/5</span></div>",
+      "css": ".ds-progress { display: flex; align-items: center; gap: 12px; font-family: var(--font-sans, Archivo, system-ui, sans-serif); font-stretch: 75%; font-variant-numeric: tabular-nums; } .ds-progress-track { flex: 1; height: 6px; overflow: hidden; border-radius: 9999px; background: var(--color-wash, #f3f4f6); } .ds-progress-fill { height: 100%; border-radius: 9999px; background: var(--color-go, #1e7a46); } .ds-progress-pct { width: 44px; text-align: right; font-weight: 800; color: var(--color-ink, #111111); } .ds-progress-count { width: 48px; text-align: right; font-size: 0.8125rem; font-weight: 700; color: var(--color-muted, #5f646b); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Departure Board",
+    "overview": "Compass treats the day as a timetable. Every to-do is a scheduled service on a white enamel board, printed in black ink, and slippage is a delay figure set in red in its own right-hand column, aligned down the board like late trains. The owner reads the board at the end of the day, mostly on a phone, ticks what ran and pushes what didn't. The system is built to make that reading instant and honest: what is due, what is late, and by how much.\n\nThe board is dense but calm. Rows are separated by hairline rules, never boxed. One variable grotesk carries everything; its condensed, heavy, tabular cut is the board's voice for anything read like a timetable (dates, counts, delays, codes, column heads), and its normal width carries the words. Colour is almost absent: black ink and white paper do the work, green means done, red means late, and the only other hues are the small line plates that code each category. A black shell bar frames the board, at the bottom under the thumb on phone and across the top on desktop.\n\nThe world deliberately refuses the to-do category default: a grey list with one blue accent, card stacks, and a floating plus button. It also refuses decoration that competes with the list; motion is limited to one moving part, the delay numeral rolling in when it changes.",
+    "keyCharacteristics": [
+      "White enamel ground, black ink, hairline rules; flat, ruled, no cards.",
+      "Two widths of one face: normal for words, condensed heavy tabular for figures.",
+      "Signal red reserved for lateness and errors; green for done.",
+      "Category codes as small coloured line plates, like route badges.",
+      "A fixed delay column on the right of every to-do row.",
+      "A black shell bar: bottom tabs on phone, top bar on desktop."
+    ],
+    "rules": [
+      {
+        "name": "The Signal Rule",
+        "body": "Red means late or wrong. It marks delay, overdue and errors, and is never used for a button, a heading, an icon or decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink-Is-The-Accent Rule",
+        "body": "There is no brand hue. Primary actions are black ink on white; green speaks only for done, blue only for the planned series in a chart.",
+        "section": "colors"
+      },
+      {
+        "name": "The Plate Contrast Rule",
+        "body": "Plates carry white condensed text, so every plate colour keeps at least 4.5:1 against white. A new category colour that fails this does not join the set.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Widths Rule",
+        "body": "If it is read as a timetable entry (a date, a count, a delay, a code, a column head, a percentage), set it condensed (`font-stretch: 75%`), heavy, with tabular numerals. If it is read as words, set it at normal width. Never the other way round.",
+        "section": "typography"
+      },
+      {
+        "name": "The Three Sizes Rule",
+        "body": "Interface text uses three sizes (0.8125rem, 1rem, 1.375rem) plus the 2.5rem board display. Hierarchy comes from width and weight, not new sizes.",
+        "section": "typography"
+      },
+      {
+        "name": "The Fixed Column Rule",
+        "body": "The delay figure always lives in its own right-aligned column, at the same x-position on every row of the board. Week and Month views reuse the same red mark.",
+        "section": "layout"
+      },
+      {
+        "name": "The Ruled Board Rule",
+        "body": "Rows are separated by rules, never wrapped in cards or lifted by shadows. If something needs grouping, give it a heading and a rule.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do set every date, count, delay, code, percentage and column head in condensed (75%) extra-bold Archivo with tabular numerals.",
+      "Do keep the delay figure in its fixed right-hand column on every to-do row, in signal red while the item is open.",
+      "Do separate rows with 1px hairlines and groups with a heading over a 2px ink rule.",
+      "Do show each to-do's category plate and objective path; the sub-objective stays visible when the objective title truncates.",
+      "Do keep every interactive target at least 44px and every focus state a visible 2px ink outline.",
+      "Do use real controls: native checkboxes, buttons, selects, links and tabs.",
+      "Do give every chart a table alternative and an accessible summary label."
+    ],
+    "donts": [
+      "Don't use signal red for anything but lateness, overdue counts and errors.",
+      "Don't introduce a brand accent colour; primary actions are black ink.",
+      "Don't wrap rows in cards, build card grids, or lift content with shadows; the tooltip is the only shadowed surface.",
+      "Don't add a floating plus button; adding is the one-line field at the top of the board.",
+      "Don't add eyebrow or kicker labels above headings, or hero-metric tiles; the progress page summarises in a sentence.",
+      "Don't add text sizes beyond the three interface sizes and the board display.",
+      "Don't set labels in tracked capitals; the only capitals are category codes on their plates.",
+      "Don't add motion beyond the delay roll, the tick check and colour transitions, and don't animate chart entry."
+    ]
+  }
+}

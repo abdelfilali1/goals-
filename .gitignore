@@ -1,0 +1,20 @@
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+.env
+.env.local
+.DS_Store
+npm-debug.log*
+
+# Impeccable review captures and decision sketches (local only)
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/config.local.json
+.impeccable/questions/
+
+# Impeccable engine binary (downloaded on first run)
+.claude/skills/impeccable/scripts/bin/
+.claude/settings.local.json
