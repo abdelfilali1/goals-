@@ -1,8 +1,8 @@
-import { diffDays, formatDay, type Day } from "@/lib/dates";
+import { formatDay, type Day } from "@/lib/dates";
 import type { ObjectiveOption, TodoView } from "@/lib/queries";
 import { moveAllOverdueToToday, pushAllUnfinished } from "@/app/todo/actions";
 import { QuickAdd } from "./QuickAdd";
-import { TodoRow } from "./TodoRow";
+import { DayBoard } from "./DayBoard";
 import { BulkButton } from "./BulkButton";
 
 export function DayView({
@@ -37,46 +37,15 @@ export function DayView({
         )
       ) : (
         <div>
-          <div
-            aria-hidden
-            className="board grid grid-cols-[44px_1fr_auto] gap-x-3 border-b border-ink pb-2 text-meta font-bold text-muted"
-          >
-            <span />
-            <span>To-do</span>
-            <span className="flex sm:gap-3">
-              <span className="w-[72px] text-right sm:w-12">Delay</span>
-              <span className="hidden w-[72px] sm:block" />
-            </span>
-          </div>
-
-          {overdue.length > 0 && (
-            <Group
-              title="Overdue"
-              count={overdue.length}
-              alert
-              action={<BulkButton action={moveAllOverdueToToday}>Bring {overdue.length} to today</BulkButton>}
-            >
-              {overdue.map((t) => (
-                <TodoRow key={t.id} todo={t} kind="overdue" delay={diffDays(today, t.originalDate)} options={options} />
-              ))}
-            </Group>
-          )}
-
-          {carried.length > 0 && (
-            <Group title="Carried over" count={carried.length}>
-              {carried.map((t) => (
-                <TodoRow key={t.id} todo={t} kind="planned" delay={t.daysPushed} options={options} />
-              ))}
-            </Group>
-          )}
-
-          {planned.length > 0 && (
-            <Group title={isToday ? "Today" : "Planned"} count={planned.length}>
-              {planned.map((t) => (
-                <TodoRow key={t.id} todo={t} kind="planned" delay={0} options={options} />
-              ))}
-            </Group>
-          )}
+          <DayBoard
+            today={today}
+            overdue={overdue}
+            carried={carried}
+            planned={planned}
+            plannedTitle={isToday ? "Today" : "Planned"}
+            options={options}
+            bringOverdue={moveAllOverdueToToday}
+          />
 
           {unfinished > 0 && (
             <div className="mt-6">
@@ -91,30 +60,3 @@ export function DayView({
   );
 }
 
-function Group({
-  title,
-  count,
-  alert,
-  action,
-  children,
-}: {
-  title: string;
-  count: number;
-  alert?: boolean;
-  action?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="mt-6 first-of-type:mt-4" aria-label={title}>
-      <div className="flex items-center justify-between gap-4 pb-1">
-        <h2 className="flex items-baseline gap-2 font-bold">
-          {title}
-          <span className={`board text-body font-extrabold ${alert ? "text-signal" : "text-muted"}`}>{count}</span>
-        </h2>
-        {action && <div className="hidden sm:block">{action}</div>}
-      </div>
-      <ul>{children}</ul>
-      {action && <div className="mt-3 sm:hidden">{action}</div>}
-    </section>
-  );
-}

@@ -21,10 +21,13 @@ export function RepeatFields({
   id,
   value,
   onChange,
+  editing = false,
 }: {
   id: string;
   value: RepeatValue;
   onChange: (value: RepeatValue) => void;
+  /** Editing an existing series: the summary counts days in the repeat. */
+  editing?: boolean;
 }) {
   const days = repeatDays(value.start, value.end, value.weekdays);
   const tooLong = value.end >= value.start && diffDays(value.end, value.start) > MAX_REPEAT_DAYS;
@@ -42,13 +45,13 @@ export function RepeatFields({
   else if (value.weekdays.length === 0) summary = "Pick at least one day.";
   else if (days.length === 0) summary = "None of the chosen days fall between those dates.";
   else
-    summary = `${days.length} to-do${days.length === 1 ? "" : "s"}, ${short(days[0])} to ${short(days[days.length - 1])}.`;
+    summary = `${days.length} ${editing ? "day" : "to-do"}${days.length === 1 ? "" : "s"}${editing ? " in this repeat" : ""}, ${short(days[0])} to ${short(days[days.length - 1])}.`;
   const problem = backwards || tooLong || days.length === 0;
 
   return (
     <fieldset id={id} className="flex flex-col gap-4 border-y border-rule py-4">
       <legend className="sr-only">Repeat</legend>
-      <input type="hidden" name="repeat" value="on" />
+      {!editing && <input type="hidden" name="repeat" value="on" />}
 
       <div className="grid grid-cols-2 gap-3 sm:max-w-md">
         <label className="flex flex-col gap-1">

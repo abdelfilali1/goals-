@@ -153,6 +153,59 @@ export async function moveAllOverdueToToday() {
   refresh();
 }
 
+/**
+ * Changes a series' dates and weekdays. History is kept: done to-dos and anything
+ * before today stay as they are. From today on, unfinished days that no longer
+ * match are removed and newly matching days are created.
+ */
+export async function updateSeriesSchedule(
+  seriesId: string,
+  schedule: { start: string; end: string; weekdays: number[] },
+): Promise<ActionResult & { added?: number; removed?: number }> {
+  const { start, end } = schedule;
+  const weekdays = [...new Set(schedule.weekdays.filter((n) => Number.isInteger(n) && n >= 1 && n <= 7))].sort();
+  if (!isDay(start) || !isDay(end)) return { error: "Choose a start date and an end date." };
+  if (end < start) return { error: "The end date is before the start date." };
+  if (diffDays(end, start) > MAX_REPEAT_DAYS) return { error: "A repeat can cover one year at most." };
+  if (weekdays.length === 0) return { error: "Pick at least one day of the week." };
+
+  const series = await db.series.findUnique({ where: { id: seriesId }, include: { todos: true } });
+  if (!series) return { error: "This repeat no longer exists." };
+
+  const today = await getToday();
+  const wanted = new Set(repeatDays(start, end, weekdays));
+  // An occurrence belongs to the day it was planned for, even if it was pushed since.
+  const planned = new Set(series.todos.map((t) => fromDb(t.originalDate)));
+
+  const toRemove = series.todos.filter(
+    (t) => !t.done && fromDb(t.dueDate) >= today && !wanted.has(fromDb(t.originalDate)),
+  );
+  const toAdd = [...wanted].filter((d) => d >= today && !planned.has(d));
+
+  await db.$transaction([
+    db.todo.deleteMany({ where: { id: { in: toRemove.map((t) => t.id) } } }),
+    db.todo.createMany({
+      data: toAdd.map((d) => ({
+        title: series.title,
+        objectiveId: series.objectiveId,
+        subObjectiveId: series.subObjectiveId,
+        originalDate: toDb(d),
+        dueDate: toDb(d),
+        seriesId,
+      })),
+    }),
+    db.series.update({ where: { id: seriesId }, data: { startDate: toDb(start), endDate: toDb(end), weekdays } }),
+  ]);
+  refresh();
+  return { added: toAdd.length, removed: toRemove.length };
+}
+
+/** Saves the order of a list of to-dos as shown, top to bottom. */
+export async function reorderTodos(ids: string[]) {
+  await db.$transaction(ids.map((id, position) => db.todo.update({ where: { id }, data: { position } })));
+  refresh();
+}
+
 /** Deletes one to-do, or with "upcoming" every unfinished occurrence of its series from this day on. */
 export async function deleteTodo(id: string, scope: "one" | "upcoming" = "one") {
   const upcoming = scope === "upcoming" ? await upcomingInSeries(id) : null;

@@ -15,6 +15,8 @@ export type TodoView = {
   daysPushed: number;
   /** True when this to-do is one day of a recurring series. */
   repeats: boolean;
+  /** The schedule of that series, for editing it. */
+  series: { id: string; start: Day; end: Day; weekdays: number[] } | null;
   objective: { id: string; title: string };
   subObjective: { id: string; title: string };
   category: { id: string; name: string; code: string; color: string };
@@ -23,12 +25,13 @@ export type TodoView = {
 const todoInclude = {
   objective: { include: { category: true } },
   subObjective: true,
+  series: true,
 } as const;
 
 type TodoRow = Awaited<ReturnType<typeof loadTodos>>[number];
 
 function loadTodos(where: Prisma.TodoWhereInput) {
-  return db.todo.findMany({ where, include: todoInclude, orderBy: [{ createdAt: "asc" }] });
+  return db.todo.findMany({ where, include: todoInclude, orderBy: [{ position: "asc" }, { createdAt: "asc" }] });
 }
 
 function toView(t: TodoRow): TodoView {
@@ -43,6 +46,9 @@ function toView(t: TodoRow): TodoView {
     pushCount: t.pushCount,
     daysPushed: diffDays(dueDate, originalDate),
     repeats: t.seriesId !== null,
+    series: t.series
+      ? { id: t.series.id, start: fromDb(t.series.startDate), end: fromDb(t.series.endDate), weekdays: t.series.weekdays }
+      : null,
     objective: { id: t.objective.id, title: t.objective.title },
     subObjective: { id: t.subObjective.id, title: t.subObjective.title },
     category: {
@@ -62,7 +68,7 @@ export async function getTodosBetween(from: Day, to: Day) {
 /** Unfinished to-dos whose day has already passed. */
 export async function getOverdue(today: Day) {
   const rows = await loadTodos({ done: false, dueDate: { lt: toDb(today) } });
-  return rows.map(toView).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+  return rows.map(toView);
 }
 
 export async function getTodosForObjective(objectiveId: string, take = 15) {

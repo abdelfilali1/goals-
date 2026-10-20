@@ -1,11 +1,12 @@
 "use client";
 
 import { useOptimistic, useState, useTransition } from "react";
-import { ArrowRight, Check, CornerDownLeft, Repeat, Trash2 } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, ChevronUp, CornerDownLeft, Repeat, Trash2 } from "lucide-react";
 import type { ObjectiveOption, TodoView } from "@/lib/queries";
 import { CodePlate } from "@/components/CodePlate";
 import { ObjectivePicker, type Pick } from "@/components/ObjectivePicker";
-import { deleteTodo, moveToToday, pushTodo, setDone, updateTodo } from "@/app/todo/actions";
+import { deleteTodo, moveToToday, pushTodo, setDone, updateSeriesSchedule, updateTodo } from "@/app/todo/actions";
+import { RepeatFields, type RepeatValue } from "./RepeatFields";
 import { Delay } from "./Delay";
 
 type Props = {
@@ -15,9 +16,11 @@ type Props = {
   kind: "planned" | "overdue";
   options: ObjectiveOption[];
   compact?: boolean;
+  /** When set, the row shows up/down arrows instead of its delay and push controls. */
+  reorder?: { onUp?: () => void; onDown?: () => void };
 };
 
-export function TodoRow({ todo, delay, kind, options, compact }: Props) {
+export function TodoRow({ todo, delay, kind, options, compact, reorder }: Props) {
   const [done, setOptimisticDone] = useOptimistic(todo.done);
   const [pending, startTransition] = useTransition();
   const [editing, setEditing] = useState(false);
@@ -101,7 +104,28 @@ export function TodoRow({ todo, delay, kind, options, compact }: Props) {
         </p>
       </div>
 
-      {compact ? (
+      {reorder ? (
+        <div className="flex items-center">
+          <button
+            type="button"
+            className="icon-btn disabled:opacity-30"
+            onClick={reorder.onUp}
+            disabled={!reorder.onUp}
+            aria-label={`Move “${todo.title}” up`}
+          >
+            <ChevronUp size={20} aria-hidden />
+          </button>
+          <button
+            type="button"
+            className="icon-btn disabled:opacity-30"
+            onClick={reorder.onDown}
+            disabled={!reorder.onDown}
+            aria-label={`Move “${todo.title}” down`}
+          >
+            <ChevronDown size={20} aria-hidden />
+          </button>
+        </div>
+      ) : compact ? (
         <div className="pt-0.5 text-right">{status}</div>
       ) : (
         // Phone: delay stacked over the push control so the title keeps the width.
@@ -141,7 +165,18 @@ function EditRow({ todo, options, onClose }: { todo: TodoView; options: Objectiv
   const [pick, setPick] = useState<Pick>({ objectiveId: todo.objective.id, subObjectiveId: todo.subObjective.id });
   const [error, setError] = useState<string>();
   const [alsoUpcoming, setAlsoUpcoming] = useState(false);
+  const series = todo.series;
+  const [schedule, setSchedule] = useState<RepeatValue | null>(
+    series ? { start: series.start, end: series.end, weekdays: series.weekdays } : null,
+  );
   const [pending, startTransition] = useTransition();
+  const scheduleChanged =
+    series !== null &&
+    schedule !== null &&
+    (schedule.start !== series.start ||
+      schedule.end !== series.end ||
+      schedule.weekdays.length !== series.weekdays.length ||
+      !schedule.weekdays.every((d) => series.weekdays.includes(d)));
 
   // An archived objective is not in the options; keep it selectable while editing.
   const withCurrent = options.some((o) => o.id === todo.objective.id)
@@ -159,8 +194,19 @@ function EditRow({ todo, options, onClose }: { todo: TodoView; options: Objectiv
   const save = () =>
     startTransition(async () => {
       const res = await updateTodo(todo.id, { title, ...pick }, todo.repeats && alsoUpcoming);
-      if (res.error) setError(res.error);
-      else onClose();
+      if (res.error) {
+        setError(res.error);
+        return;
+      }
+      // Title and objective first, so days the new schedule adds use the updated details.
+      if (series && schedule && scheduleChanged) {
+        const sched = await updateSeriesSchedule(series.id, schedule);
+        if (sched.error) {
+          setError(sched.error);
+          return;
+        }
+      }
+      onClose();
     });
 
   const remove = (scope: "one" | "upcoming") =>
@@ -198,6 +244,17 @@ function EditRow({ todo, options, onClose }: { todo: TodoView; options: Objectiv
             />
             <span>Also change the unfinished repeats after this day</span>
           </label>
+        )}
+        {schedule && (
+          <section aria-label="Repeat schedule" className="flex flex-col gap-1">
+            <h3 className="mt-2 flex items-center gap-2 font-bold">
+              <Repeat size={16} strokeWidth={2.5} aria-hidden /> Repeat schedule
+            </h3>
+            <p className="text-meta text-muted">
+              Changes apply from today. Days already done or in the past stay as they are.
+            </p>
+            <RepeatFields id={`schedule-${todo.id}`} value={schedule} onChange={setSchedule} editing />
+          </section>
         )}
         {error && (
           <p role="alert" className="text-meta font-semibold text-signal">

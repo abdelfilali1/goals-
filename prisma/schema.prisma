@@ -59,6 +59,8 @@ model Todo {
   /// The day the to-do is currently scheduled for.
   dueDate        DateTime     @db.Date
   pushCount      Int          @default(0)
+  /// Order within a day. New to-dos sort last until the list is reordered.
+  position       Int          @default(1000000)
   done           Boolean      @default(false)
   completedAt    DateTime?
   createdAt      DateTime     @default(now())
