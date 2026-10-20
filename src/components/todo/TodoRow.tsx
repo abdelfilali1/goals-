@@ -1,7 +1,7 @@
 "use client";
 
 import { useOptimistic, useState, useTransition } from "react";
-import { ArrowRight, Check, CornerDownLeft, Trash2 } from "lucide-react";
+import { ArrowRight, Check, CornerDownLeft, Repeat, Trash2 } from "lucide-react";
 import type { ObjectiveOption, TodoView } from "@/lib/queries";
 import { CodePlate } from "@/components/CodePlate";
 import { ObjectivePicker, type Pick } from "@/components/ObjectivePicker";
@@ -88,6 +88,12 @@ export function TodoRow({ todo, delay, kind, options, compact }: Props) {
         {/* The objective gives way first so the sub-objective always shows. */}
         <p id={`${boxId}-path`} className="mt-1 flex min-w-0 items-center gap-2 text-meta text-muted">
           <CodePlate code={todo.category.code} color={todo.category.color} name={todo.category.name} />
+          {todo.repeats && (
+            <span className="flex-none text-ink" title="Repeats">
+              <Repeat size={14} strokeWidth={2.5} aria-hidden />
+              <span className="sr-only">Repeats.</span>
+            </span>
+          )}
           <span className="flex min-w-0 gap-1">
             <span className="truncate">{todo.objective.title}</span>
             <span className="max-w-[65%] flex-none truncate">› {todo.subObjective.title}</span>
@@ -134,6 +140,7 @@ function EditRow({ todo, options, onClose }: { todo: TodoView; options: Objectiv
   const [title, setTitle] = useState(todo.title);
   const [pick, setPick] = useState<Pick>({ objectiveId: todo.objective.id, subObjectiveId: todo.subObjective.id });
   const [error, setError] = useState<string>();
+  const [alsoUpcoming, setAlsoUpcoming] = useState(false);
   const [pending, startTransition] = useTransition();
 
   // An archived objective is not in the options; keep it selectable while editing.
@@ -151,15 +158,19 @@ function EditRow({ todo, options, onClose }: { todo: TodoView; options: Objectiv
 
   const save = () =>
     startTransition(async () => {
-      const res = await updateTodo(todo.id, { title, ...pick });
+      const res = await updateTodo(todo.id, { title, ...pick }, todo.repeats && alsoUpcoming);
       if (res.error) setError(res.error);
       else onClose();
     });
 
-  const remove = () =>
+  const remove = (scope: "one" | "upcoming") =>
     startTransition(async () => {
-      if (!window.confirm(`Delete “${todo.title}”? This cannot be undone.`)) return;
-      await deleteTodo(todo.id);
+      const what =
+        scope === "upcoming"
+          ? `Delete “${todo.title}” on this day and every unfinished repeat after it?`
+          : `Delete “${todo.title}”${todo.repeats ? " on this day only" : ""}?`;
+      if (!window.confirm(`${what} This cannot be undone.`)) return;
+      await deleteTodo(todo.id, scope);
     });
 
   return (
@@ -177,6 +188,17 @@ function EditRow({ todo, options, onClose }: { todo: TodoView; options: Objectiv
           <input className="field" value={title} onChange={(e) => setTitle(e.target.value)} autoFocus required />
         </label>
         <ObjectivePicker options={withCurrent} value={pick} onChange={setPick} disabled={pending} />
+        {todo.repeats && (
+          <label className="flex min-h-11 cursor-pointer items-center gap-3">
+            <input
+              type="checkbox"
+              className="h-5 w-5 accent-ink"
+              checked={alsoUpcoming}
+              onChange={(e) => setAlsoUpcoming(e.target.checked)}
+            />
+            <span>Also change the unfinished repeats after this day</span>
+          </label>
+        )}
         {error && (
           <p role="alert" className="text-meta font-semibold text-signal">
             {error}
@@ -189,9 +211,16 @@ function EditRow({ todo, options, onClose }: { todo: TodoView; options: Objectiv
           <button type="button" className="btn btn-quiet" onClick={onClose}>
             Cancel
           </button>
-          <button type="button" className="btn btn-quiet ml-auto" onClick={remove} disabled={pending}>
-            <Trash2 size={18} aria-hidden /> Delete
-          </button>
+          <span className="ml-auto flex flex-wrap gap-2">
+            <button type="button" className="btn btn-quiet" onClick={() => remove("one")} disabled={pending}>
+              <Trash2 size={18} aria-hidden /> {todo.repeats ? "Delete this day" : "Delete"}
+            </button>
+            {todo.repeats && (
+              <button type="button" className="btn btn-quiet" onClick={() => remove("upcoming")} disabled={pending}>
+                Delete upcoming repeats
+              </button>
+            )}
+          </span>
         </div>
       </form>
     </li>

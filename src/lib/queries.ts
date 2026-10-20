@@ -13,6 +13,8 @@ export type TodoView = {
   pushCount: number;
   /** How many days the to-do has slipped since it was first planned. */
   daysPushed: number;
+  /** True when this to-do is one day of a recurring series. */
+  repeats: boolean;
   objective: { id: string; title: string };
   subObjective: { id: string; title: string };
   category: { id: string; name: string; code: string; color: string };
@@ -40,6 +42,7 @@ function toView(t: TodoRow): TodoView {
     originalDate,
     pushCount: t.pushCount,
     daysPushed: diffDays(dueDate, originalDate),
+    repeats: t.seriesId !== null,
     objective: { id: t.objective.id, title: t.objective.title },
     subObjective: { id: t.subObjective.id, title: t.subObjective.title },
     category: {

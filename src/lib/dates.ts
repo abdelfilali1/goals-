@@ -85,3 +85,20 @@ export function formatDay(day: Day, style: "long" | "short" | "weekday" | "month
       return String(d.getUTCDate());
   }
 }
+
+/** ISO weekday: 1 = Monday … 7 = Sunday. */
+export function isoWeekday(day: Day): number {
+  return ((toDb(day).getUTCDay() + 6) % 7) + 1;
+}
+
+export const WEEKDAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] as const;
+
+/** The longest span a recurring to-do may cover. */
+export const MAX_REPEAT_DAYS = 366;
+
+/** Every day from start to end (inclusive) that falls on one of the ISO weekdays. */
+export function repeatDays(start: Day, end: Day, weekdays: number[]): Day[] {
+  if (end < start || diffDays(end, start) > MAX_REPEAT_DAYS) return [];
+  const set = new Set(weekdays);
+  return daysBetween(start, end).filter((d) => set.has(isoWeekday(d)));
+}

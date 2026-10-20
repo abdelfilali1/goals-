@@ -28,6 +28,7 @@ model Objective {
   archived      Boolean        @default(false)
   createdAt     DateTime       @default(now())
   subObjectives SubObjective[]
+  series        Series[]
   todos         Todo[]
 
   @@index([categoryId])
@@ -40,6 +41,7 @@ model SubObjective {
   title       String
   sortOrder   Int       @default(0)
   todos       Todo[]
+  series      Series[]
 
   @@index([objectiveId])
 }
@@ -60,8 +62,29 @@ model Todo {
   done           Boolean      @default(false)
   completedAt    DateTime?
   createdAt      DateTime     @default(now())
+  /// Set when the to-do was created as one day of a recurring series.
+  seriesId       String?
+  series         Series?      @relation(fields: [seriesId], references: [id], onDelete: SetNull)
 
   @@index([dueDate])
   @@index([objectiveId])
   @@index([subObjectiveId])
+  @@index([seriesId])
+}
+
+/// A recurring to-do. One Todo is created for each matching day between
+/// startDate and endDate, so every day can be ticked or pushed on its own.
+model Series {
+  id             String       @id @default(cuid())
+  title          String
+  objectiveId    String
+  objective      Objective    @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  subObjectiveId String
+  subObjective   SubObjective @relation(fields: [subObjectiveId], references: [id], onDelete: Cascade)
+  startDate      DateTime     @db.Date
+  endDate        DateTime     @db.Date
+  /// ISO weekdays: 1 = Monday … 7 = Sunday.
+  weekdays       Int[]
+  createdAt      DateTime     @default(now())
+  todos          Todo[]
 }
