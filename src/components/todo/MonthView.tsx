@@ -24,7 +24,7 @@ export function MonthView({ date, today, todos }: { date: Day; today: Day; todos
         {daysBetween(gridStart, gridEnd).map((day) => {
           const items = todos.filter((t) => t.dueDate === day);
           const done = items.filter((t) => t.done).length;
-          const pushed = items.filter((t) => t.daysPushed > 0 && !t.done).length;
+          const pushed = items.filter((t) => t.daysPushed > 0 && !t.done && !t.missed).length;
           const inMonth = day.slice(0, 7) === month;
           const pct = items.length ? (done / items.length) * 100 : 0;
           const label = `${formatDay(day, "long")}: ${items.length ? `${done} of ${items.length} done` : "nothing planned"}${

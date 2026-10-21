@@ -62,6 +62,8 @@ model Todo {
   /// Order within a day. New to-dos sort last until the list is reordered.
   position       Int          @default(1000000)
   done           Boolean      @default(false)
+  /// Explicitly marked as not done (missed). Never true together with done.
+  missed         Boolean      @default(false)
   completedAt    DateTime?
   createdAt      DateTime     @default(now())
   /// Set when the to-do was created as one day of a recurring series.

@@ -1,11 +1,19 @@
 "use client";
 
 import { useOptimistic, useState, useTransition } from "react";
-import { ArrowRight, Check, ChevronDown, ChevronUp, CornerDownLeft, Repeat, Trash2 } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, ChevronUp, CornerDownLeft, Repeat, Trash2, X } from "lucide-react";
 import type { ObjectiveOption, TodoView } from "@/lib/queries";
 import { CodePlate } from "@/components/CodePlate";
 import { ObjectivePicker, type Pick } from "@/components/ObjectivePicker";
-import { deleteTodo, moveToToday, pushTodo, setDone, updateSeriesSchedule, updateTodo } from "@/app/todo/actions";
+import {
+  deleteTodo,
+  moveToToday,
+  pushTodo,
+  setDone,
+  setMissed,
+  updateSeriesSchedule,
+  updateTodo,
+} from "@/app/todo/actions";
 import { RepeatFields, type RepeatValue } from "./RepeatFields";
 import { Delay } from "./Delay";
 
@@ -20,16 +28,26 @@ type Props = {
   reorder?: { onUp?: () => void; onDown?: () => void };
 };
 
+type State = "open" | "done" | "missed";
+
 export function TodoRow({ todo, delay, kind, options, compact, reorder }: Props) {
-  const [done, setOptimisticDone] = useOptimistic(todo.done);
+  const [state, setOptimisticState] = useOptimistic<State>(todo.done ? "done" : todo.missed ? "missed" : "open");
+  const done = state === "done";
+  const missed = state === "missed";
   const [pending, startTransition] = useTransition();
   const [editing, setEditing] = useState(false);
   const boxId = `todo-${todo.id}`;
 
   const toggle = (checked: boolean) =>
     startTransition(async () => {
-      setOptimisticDone(checked);
+      setOptimisticState(checked ? "done" : "open");
       await setDone(todo.id, checked);
+    });
+
+  const toggleMissed = () =>
+    startTransition(async () => {
+      setOptimisticState(missed ? "open" : "missed");
+      await setMissed(todo.id, !missed);
     });
 
   const move = () =>
@@ -42,8 +60,9 @@ export function TodoRow({ todo, delay, kind, options, compact, reorder }: Props)
     return <EditRow todo={todo} options={options} onClose={() => setEditing(false)} />;
   }
 
-  const status =
-    done && delay === 0 ? (
+  const status = missed ? (
+    <span className="board text-meta font-extrabold whitespace-nowrap text-signal">Not done</span>
+  ) : done && delay === 0 ? (
       <span className="inline-flex text-go" title="Done">
         <Check size={20} strokeWidth={3} aria-hidden />
         <span className="sr-only">Done</span>
@@ -55,23 +74,40 @@ export function TodoRow({ todo, delay, kind, options, compact, reorder }: Props)
   return (
     <li
       className={`grid items-start gap-x-3 border-b border-rule transition-opacity ${
-        compact ? "grid-cols-[22px_1fr_auto] py-2.5" : "grid-cols-[44px_1fr_auto] py-1.5"
+        compact ? "grid-cols-[22px_1fr_auto] py-2.5" : "grid-cols-[88px_1fr_auto] py-1.5"
       } ${pending ? "opacity-50" : ""}`}
     >
-      <div className={compact ? "pt-0.5" : "flex h-11 items-center justify-center"}>
-        <input
-          id={boxId}
-          type="checkbox"
-          className="tick"
-          checked={done}
-          onChange={(e) => toggle(e.target.checked)}
-          aria-describedby={`${boxId}-path`}
-        />
+      {/* Done and not done side by side: two explicit answers for the day. */}
+      <div className={compact ? "pt-0.5" : "flex h-11 items-center"}>
+        <span className={compact ? "" : "flex h-11 w-11 items-center justify-center"}>
+          <input
+            id={boxId}
+            type="checkbox"
+            className="tick"
+            checked={done}
+            onChange={(e) => toggle(e.target.checked)}
+            aria-describedby={`${boxId}-path`}
+          />
+        </span>
+        {!compact && (
+          <button
+            type="button"
+            onClick={toggleMissed}
+            aria-pressed={missed}
+            aria-label={`Not done: ${todo.title}`}
+            title={missed ? "Marked as not done. Tap to undo." : "Mark as not done"}
+            className="flex h-11 w-11 items-center justify-center"
+          >
+            <span className="miss" aria-hidden>
+              <X size={14} strokeWidth={3} />
+            </span>
+          </button>
+        )}
       </div>
 
       <div className={`min-w-0 ${compact ? "" : "py-2"}`}>
         {compact ? (
-          <label htmlFor={boxId} className={`block cursor-pointer ${done ? "text-muted line-through" : "font-semibold"}`}>
+          <label htmlFor={boxId} className={`block cursor-pointer ${done ? "text-muted line-through" : missed ? "text-muted" : "font-semibold"}`}>
             {todo.title}
           </label>
         ) : (
@@ -82,7 +118,7 @@ export function TodoRow({ todo, delay, kind, options, compact, reorder }: Props)
             <button
               type="button"
               onClick={() => setEditing(true)}
-              className={`block text-left hover:underline ${done ? "text-muted line-through" : "font-semibold"}`}
+              className={`block text-left hover:underline ${done ? "text-muted line-through" : missed ? "text-muted" : "font-semibold"}`}
             >
               {todo.title}
             </button>
@@ -133,7 +169,7 @@ export function TodoRow({ todo, delay, kind, options, compact, reorder }: Props)
         <div className="flex w-[72px] flex-col items-end sm:w-auto sm:flex-row sm:items-center sm:gap-3">
           <div className="flex h-8 items-center justify-end sm:h-11 sm:w-12">{status}</div>
           <div className="flex h-11 w-[72px] items-center justify-center">
-          {!done && (
+          {state === "open" && (
             <button
               type="button"
               onClick={move}

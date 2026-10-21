@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { addDays, addMonths, endOfMonth, formatDay, isDay, startOfMonth, startOfWeek } from "@/lib/dates";
 import { getToday } from "@/lib/today";
-import { getObjectiveOptions, getOverdue, getTodosBetween } from "@/lib/queries";
+import { getObjectiveOptions, getTodosBetween, getUnanswered } from "@/lib/queries";
 import { BoardHeader, type View } from "@/components/todo/BoardHeader";
 import { DayView } from "@/components/todo/DayView";
 import { WeekView } from "@/components/todo/WeekView";
@@ -68,9 +68,9 @@ export default async function TodoPage({
     );
   }
 
-  const [todos, overdue] = await Promise.all([
+  const [todos, unanswered] = await Promise.all([
     getTodosBetween(date, date),
-    date === today ? getOverdue(today) : Promise.resolve([]),
+    date === today ? getUnanswered(today) : Promise.resolve(null),
   ]);
   const note =
     date === today ? "today" : date === addDays(today, -1) ? "yesterday" : date === addDays(today, 1) ? "tomorrow" : undefined;
@@ -89,7 +89,7 @@ export default async function TodoPage({
         today={today}
         showToday={date !== today}
       />
-      <DayView date={date} today={today} todos={todos} overdue={overdue} options={options} />
+      <DayView date={date} today={today} todos={todos} unanswered={unanswered} options={options} />
     </>
   );
 }

@@ -74,7 +74,10 @@ export async function addTodo(_prev: ActionResult | undefined, formData: FormDat
 async function upcomingInSeries(id: string) {
   const todo = await db.todo.findUnique({ where: { id } });
   if (!todo?.seriesId) return null;
-  return { seriesId: todo.seriesId, where: { seriesId: todo.seriesId, done: false, dueDate: { gte: todo.dueDate } } };
+  return {
+    seriesId: todo.seriesId,
+    where: { seriesId: todo.seriesId, done: false, missed: false, dueDate: { gte: todo.dueDate } },
+  };
 }
 
 export async function updateTodo(
@@ -102,18 +105,40 @@ export async function updateTodo(
   return {};
 }
 
+// A to-do is done, not done (missed), or still open. Done and missed exclude each other,
+// and nothing ever moves to another day unless one of the actions below is used.
+
 export async function setDone(id: string, done: boolean) {
   await db.todo.update({
     where: { id },
-    data: { done, completedAt: done ? new Date() : null },
+    data: done ? { done: true, missed: false, completedAt: new Date() } : { done: false, completedAt: null },
   });
   refresh();
 }
 
-/** Moves one unfinished to-do forward by a day. */
+/** Records that the to-do was not done on its day. It stays on that day. */
+export async function setMissed(id: string, missed: boolean) {
+  await db.todo.update({
+    where: { id },
+    data: missed ? { missed: true, done: false, completedAt: null } : { missed: false },
+  });
+  refresh();
+}
+
+/** Marks every open to-do due on `day` as not done. */
+export async function markUnfinishedMissed(day: string) {
+  if (!isDay(day)) return;
+  await db.todo.updateMany({
+    where: { done: false, missed: false, dueDate: toDb(day) },
+    data: { missed: true },
+  });
+  refresh();
+}
+
+/** Moves one open to-do forward by a day. */
 export async function pushTodo(id: string) {
   const todo = await db.todo.findUnique({ where: { id } });
-  if (!todo || todo.done) return;
+  if (!todo || todo.done || todo.missed) return;
   await db.todo.update({
     where: { id },
     data: { dueDate: toDb(addDays(fromDb(todo.dueDate), 1)), pushCount: { increment: 1 } },
@@ -121,21 +146,21 @@ export async function pushTodo(id: string) {
   refresh();
 }
 
-/** Moves every unfinished to-do due on `day` to the following day. */
+/** Moves every open to-do due on `day` to the following day. */
 export async function pushAllUnfinished(day: string) {
   if (!isDay(day)) return;
   await db.$executeRaw`
     UPDATE "Todo"
     SET "dueDate" = "dueDate" + 1, "pushCount" = "pushCount" + 1
-    WHERE "done" = false AND "dueDate" = ${toDb(day)}::date`;
+    WHERE "done" = false AND "missed" = false AND "dueDate" = ${toDb(day)}::date`;
   refresh();
 }
 
-/** Brings an overdue to-do (due before today) onto today's list. */
+/** Moves an open to-do from a past day onto today's list, on request. */
 export async function moveToToday(id: string) {
   const today = await getToday();
   const todo = await db.todo.findUnique({ where: { id } });
-  if (!todo || todo.done || fromDb(todo.dueDate) >= today) return;
+  if (!todo || todo.done || todo.missed || fromDb(todo.dueDate) >= today) return;
   await db.todo.update({
     where: { id },
     data: { dueDate: toDb(today), pushCount: { increment: 1 } },
@@ -143,13 +168,14 @@ export async function moveToToday(id: string) {
   refresh();
 }
 
-/** Brings every overdue to-do onto today's list. */
-export async function moveAllOverdueToToday() {
-  const today = toDb(await getToday());
+/** Moves every open to-do of one past day onto today's list, on request. */
+export async function moveDayToToday(day: string) {
+  const today = await getToday();
+  if (!isDay(day) || day >= today) return;
   await db.$executeRaw`
     UPDATE "Todo"
-    SET "dueDate" = ${today}::date, "pushCount" = "pushCount" + 1
-    WHERE "done" = false AND "dueDate" < ${today}::date`;
+    SET "dueDate" = ${toDb(today)}::date, "pushCount" = "pushCount" + 1
+    WHERE "done" = false AND "missed" = false AND "dueDate" = ${toDb(day)}::date`;
   refresh();
 }
 
@@ -178,7 +204,7 @@ export async function updateSeriesSchedule(
   const planned = new Set(series.todos.map((t) => fromDb(t.originalDate)));
 
   const toRemove = series.todos.filter(
-    (t) => !t.done && fromDb(t.dueDate) >= today && !wanted.has(fromDb(t.originalDate)),
+    (t) => !t.done && !t.missed && fromDb(t.dueDate) >= today && !wanted.has(fromDb(t.originalDate)),
   );
   const toAdd = [...wanted].filter((d) => d >= today && !planned.has(d));
 

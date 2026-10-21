@@ -8,6 +8,8 @@ export type TodoView = {
   id: string;
   title: string;
   done: boolean;
+  /** Marked as not done on its day. */
+  missed: boolean;
   dueDate: Day;
   originalDate: Day;
   pushCount: number;
@@ -41,6 +43,7 @@ function toView(t: TodoRow): TodoView {
     id: t.id,
     title: t.title,
     done: t.done,
+    missed: t.missed,
     dueDate,
     originalDate,
     pushCount: t.pushCount,
@@ -65,10 +68,17 @@ export async function getTodosBetween(from: Day, to: Day) {
   return rows.map(toView);
 }
 
-/** Unfinished to-dos whose day has already passed. */
-export async function getOverdue(today: Day) {
-  const rows = await loadTodos({ done: false, dueDate: { lt: toDb(today) } });
-  return rows.map(toView);
+/**
+ * Open to-dos left on days before today: neither done nor marked as not done.
+ * They stay on their own day; this only says how many there are and the latest such day.
+ */
+export async function getUnanswered(today: Day) {
+  const where = { done: false, missed: false, dueDate: { lt: toDb(today) } };
+  const [count, latest] = await Promise.all([
+    db.todo.count({ where }),
+    db.todo.findFirst({ where, orderBy: { dueDate: "desc" }, select: { dueDate: true } }),
+  ]);
+  return { count, latestDay: latest ? fromDb(latest.dueDate) : null };
 }
 
 export async function getTodosForObjective(objectiveId: string, take = 15) {

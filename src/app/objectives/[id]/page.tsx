@@ -97,7 +97,7 @@ export default async function ObjectivePage({ params }: Params) {
                   <span className={t.done ? "text-muted line-through" : "font-semibold"}>{t.title}</span>
                   <span className="block text-meta text-muted">
                     {t.subObjective.title}
-                    {t.done ? " · done" : t.dueDate < today ? " · overdue" : ""}
+                    {t.done ? " · done" : t.missed ? " · not done" : t.dueDate < today ? " · no answer" : ""}
                   </span>
                 </span>
                 <Delay days={t.daysPushed} muted={t.done} />

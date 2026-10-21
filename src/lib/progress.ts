@@ -92,7 +92,7 @@ export async function getProgressOverview(today: Day) {
       _count: { _all: true },
     }),
     db.todo.findMany({
-      where: { done: false, pushCount: { gt: 0 } },
+      where: { done: false, missed: false, pushCount: { gt: 0 } },
       select: { dueDate: true, originalDate: true },
     }),
   ]);

@@ -2,53 +2,39 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { ArrowUpDown } from "lucide-react";
-import { diffDays, type Day } from "@/lib/dates";
 import type { ObjectiveOption, TodoView } from "@/lib/queries";
 import { reorderTodos } from "@/app/todo/actions";
 import { TodoRow } from "./TodoRow";
-import { BulkButton } from "./BulkButton";
 
 type GroupDef = {
   key: string;
   title: string;
   todos: TodoView[];
+  /** "overdue" rows sit on a past day: their move action brings them to today. */
   kind: "planned" | "overdue";
-  alert?: boolean;
-  action?: React.ReactNode;
 };
 
 /** The day's board: sections of to-do rows, with a reorder mode that swaps the push controls for arrows. */
 export function DayBoard({
-  today,
-  overdue,
+  past,
   carried,
   planned,
   plannedTitle,
   options,
-  bringOverdue,
 }: {
-  today: Day;
-  overdue: TodoView[];
+  past: boolean;
   carried: TodoView[];
   planned: TodoView[];
   plannedTitle: string;
   options: ObjectiveOption[];
-  bringOverdue: () => Promise<void>;
 }) {
   const [reordering, setReordering] = useState(false);
-  const total = overdue.length + carried.length + planned.length;
+  const total = carried.length + planned.length;
+  const kind = past ? "overdue" : "planned";
 
   const groups: GroupDef[] = [
-    {
-      key: "overdue",
-      title: "Overdue",
-      todos: overdue,
-      kind: "overdue",
-      alert: true,
-      action: <BulkButton action={bringOverdue}>Bring {overdue.length} to today</BulkButton>,
-    },
-    { key: "carried", title: "Carried over", todos: carried, kind: "planned" },
-    { key: "planned", title: plannedTitle, todos: planned, kind: "planned" },
+    { key: "carried", title: "Carried over", todos: carried, kind },
+    { key: "planned", title: plannedTitle, todos: planned, kind },
   ];
 
   return (
@@ -70,9 +56,9 @@ export function DayBoard({
       )}
       <div
         aria-hidden
-        className="board grid grid-cols-[44px_1fr_auto] gap-x-3 border-b border-ink pb-2 text-meta font-bold text-muted"
+        className="board grid grid-cols-[88px_1fr_auto] gap-x-3 border-b border-ink pb-2 text-meta font-bold text-muted"
       >
-        <span />
+        <span className="text-center">Done?</span>
         <span>To-do</span>
         {reordering ? (
           <span className="w-[88px] text-center">Order</span>
@@ -87,7 +73,7 @@ export function DayBoard({
       {groups.map(
         (g) =>
           g.todos.length > 0 && (
-            <Group key={g.key} def={g} today={today} options={options} reordering={reordering} />
+            <Group key={g.key} def={g} options={options} reordering={reordering} />
           ),
       )}
     </div>
@@ -96,12 +82,10 @@ export function DayBoard({
 
 function Group({
   def,
-  today,
   options,
   reordering,
 }: {
   def: GroupDef;
-  today: Day;
   options: ObjectiveOption[];
   reordering: boolean;
 }) {
@@ -126,11 +110,10 @@ function Group({
       <div className="flex items-center justify-between gap-4 pb-1">
         <h2 className="flex items-baseline gap-2 font-bold">
           {def.title}
-          <span className={`board text-body font-extrabold ${def.alert ? "text-signal" : "text-muted"}`}>
+          <span className="board text-body font-extrabold text-muted">
             {rows.length}
           </span>
         </h2>
-        {def.action && !reordering && <div className="hidden sm:block">{def.action}</div>}
       </div>
       <ul>
         {rows.map((t, i) => (
@@ -138,7 +121,7 @@ function Group({
             key={t.id}
             todo={t}
             kind={def.kind}
-            delay={def.kind === "overdue" ? diffDays(today, t.originalDate) : t.daysPushed}
+            delay={t.daysPushed}
             options={options}
             reorder={
               reordering
@@ -151,7 +134,6 @@ function Group({
           />
         ))}
       </ul>
-      {def.action && !reordering && <div className="mt-3 sm:hidden">{def.action}</div>}
     </section>
   );
 }

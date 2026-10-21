@@ -177,6 +177,28 @@
   .tick:checked::after {
     transform: translateY(-1px) rotate(45deg) scale(1);
   }
+
+  /* The not-done box: same square as the tick, filled with signal red when pressed. */
+  .miss {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--color-muted);
+    border-radius: var(--radius-plate);
+    display: grid;
+    place-content: center;
+    color: var(--color-muted);
+    transition: background-color 120ms ease-out, border-color 120ms ease-out, color 120ms ease-out;
+  }
+  button:hover > .miss {
+    border-color: var(--color-signal);
+    color: var(--color-signal);
+  }
+  button[aria-pressed="true"] > .miss {
+    background: var(--color-signal);
+    border-color: var(--color-signal);
+    color: var(--color-paper);
+  }
 }
 
 /* The delay numeral rolls in when it changes: the board's one moving part. */

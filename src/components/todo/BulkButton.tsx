@@ -3,7 +3,15 @@
 import { useTransition } from "react";
 
 /** A secondary button that runs a server action and shows it is busy. */
-export function BulkButton({ action, children }: { action: () => Promise<void>; children: React.ReactNode }) {
+export function BulkButton({
+  action,
+  children,
+  pendingLabel = "Moving…",
+}: {
+  action: () => Promise<void>;
+  children: React.ReactNode;
+  pendingLabel?: string;
+}) {
   const [pending, startTransition] = useTransition();
   return (
     <button
@@ -12,7 +20,7 @@ export function BulkButton({ action, children }: { action: () => Promise<void>; 
       disabled={pending}
       onClick={() => startTransition(action)}
     >
-      {pending ? "Moving…" : children}
+      {pending ? pendingLabel : children}
     </button>
   );
 }
