@@ -92,3 +92,10 @@ model Series {
   createdAt      DateTime     @default(now())
   todos          Todo[]
 }
+
+/// Free-text notes for one week, keyed by its Monday.
+model WeekNote {
+  weekStart DateTime @id @db.Date
+  notes     String   @default("")
+  updatedAt DateTime @updatedAt
+}

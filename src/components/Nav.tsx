@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChartNoAxesColumn, ListChecks, LogOut, Target } from "lucide-react";
+import { ChartNoAxesColumn, ListChecks, LogOut, NotebookPen, Target } from "lucide-react";
 import { logout } from "@/app/login/actions";
 
 const LINKS = [
   { href: "/todo", label: "To-do", icon: ListChecks },
   { href: "/objectives", label: "Objectives", icon: Target },
   { href: "/progress", label: "Progress", icon: ChartNoAxesColumn },
+  { href: "/recap", label: "Recap", icon: NotebookPen },
 ];
 
 export function Nav() {
@@ -64,7 +65,7 @@ export function Nav() {
       </header>
       <nav
         aria-label="Main"
-        className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-3 bg-shell pb-[env(safe-area-inset-bottom)] md:hidden"
+        className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 bg-shell pb-[env(safe-area-inset-bottom)] md:hidden"
       >
         {LINKS.map(({ href, label, icon: Icon }) => (
           <Link

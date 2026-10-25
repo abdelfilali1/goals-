@@ -141,3 +141,40 @@ export async function getProgressOverview(today: Day) {
 
   return { overall, thisWeek, carriedOver, byCategory, objectives, days };
 }
+
+/**
+ * Done/total per category for to-dos due in the week starting `weekStart`,
+ * up to `today` so days still ahead never count against the week.
+ */
+export async function getWeekScores(weekStart: Day, today: Day) {
+  const weekEnd = addDays(weekStart, 6);
+  const last = weekEnd < today ? weekEnd : today;
+  const [groups, objectives, categories] = await Promise.all([
+    last < weekStart
+      ? Promise.resolve([])
+      : db.todo.groupBy({
+          by: ["objectiveId", "done"],
+          where: { dueDate: { gte: toDb(weekStart), lte: toDb(last) } },
+          _count: { _all: true },
+        }),
+    db.objective.findMany({ select: { id: true, categoryId: true } }),
+    db.category.findMany({ orderBy: { sortOrder: "asc" } }),
+  ]);
+
+  const categoryOf = new Map(objectives.map((o) => [o.id, o.categoryId]));
+  const catCounts = new Map<string, Counts>();
+  for (const g of groups) {
+    const categoryId = categoryOf.get(g.objectiveId);
+    if (categoryId) add(catCounts, categoryId, g.done, g._count._all);
+  }
+
+  const byCategory = categories.map((c) => {
+    const counts = catCounts.get(c.id) ?? empty();
+    return { id: c.id, name: c.name, code: c.code, color: c.color, progress: ratio(counts.done, counts.total) };
+  });
+  const overall = ratio(
+    byCategory.reduce((s, c) => s + c.progress.done, 0),
+    byCategory.reduce((s, c) => s + c.progress.total, 0),
+  );
+  return { overall, byCategory };
+}
